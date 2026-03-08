@@ -1,20 +1,10 @@
 import pytest
-from bodegaria.etl.core import download_resource
-from bodegaria.etl.extract import ceaf
+from bodegaria.etl.ceaf import extract, transform
 
 
 @pytest.fixture
 def tmp_path(tmp_path_factory: pytest.TempPathFactory):
     return tmp_path_factory.mktemp("shared_dir")
-
-
-def test_download_resource_downloads_zip_file_in_specified_folder(tmp_path):
-    url = "https://github.com/robots.txt"
-    resource_name = "robots.txt"
-
-    download_resource(url, resource_name, tmp_path)
-
-    assert (tmp_path / resource_name).exists()
 
 
 def test_ceaf_extraction_downloads_data_into_specified_folder(tmp_path):
@@ -23,7 +13,11 @@ def test_ceaf_extraction_downloads_data_into_specified_folder(tmp_path):
     output_folder.mkdir()
 
     # When
-    ceaf(output_folder)
+    resource_path = extract(output_folder)
 
     # Then
     assert (output_folder / "ceaf.zip").exists()
+    assert (output_folder / "20260306_Expulsoes.csv").exists()
+
+
+def test_ceaf_transform_unzips_resource_and_generates_csv(tmp_path): ...
