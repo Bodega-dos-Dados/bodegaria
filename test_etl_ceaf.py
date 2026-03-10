@@ -1,4 +1,5 @@
 import pytest
+from datetime import datetime
 from bodegaria.etl.ceaf import extract, transform
 
 
@@ -17,7 +18,7 @@ def test_ceaf_extraction_downloads_data_into_specified_folder(tmp_path):
 
     # Then
     assert (output_folder / "ceaf.zip").exists()
-    assert (output_folder / "20260306_Expulsoes.csv").exists()
+    assert (output_folder / f"{datetime.now().strftime('%Y%m%d')}_Expulsoes.csv").exists()
 
 
 def test_ceaf_transform_unzips_resource_and_generates_csv(tmp_path): ...
